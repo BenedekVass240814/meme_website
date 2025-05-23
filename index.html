@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trust Me</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #container {
+      width: 100vw;
+      height: 100vh;
+      background-color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: background-color 1s;
+      position: relative;
+    }
+
+    button {
+      padding: 1em 2em;
+      font-size: 1.5em;
+      cursor: pointer;
+      background: #fff;
+      border: none;
+      border-radius: 10px;
+      transition: background 0.3s;
+      z-index: 10;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    #gif, #bgImage, audio {
+      display: none;
+    }
+
+    #bgImage {
+      position: absolute;
+      max-width: 50vw;
+      max-height: 50vh;
+      border: 20px solid red;
+      z-index: 1;
+      animation: zoomIn 8s ease-out forwards;
+    }
+
+    #gif {
+      position: absolute;
+      max-width: 40vw;
+      max-height: 40vh;
+      z-index: 2;
+      animation: zoomIn 8s ease-out forwards;
+    }
+
+    @keyframes zoomIn {
+      0% {
+        transform: scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.8);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <button id="trustBtn">Trust me</button>
+    <img id="bgImage" src="bg/miskoc.jpg" alt="Background Frame">
+    <img id="gif" src="gifs/mexikoi.gif" alt="Funny GIF">
+    <audio id="sound" src="music/music.mp3"></audio>
+  </div>
+
+  <script>
+    const button = document.getElementById('trustBtn');
+    const gif = document.getElementById('gif');
+    const bg = document.getElementById('bgImage');
+    const sound = document.getElementById('sound');
+    const container = document.getElementById('container');
+
+    const borderColors = ['red', 'lime', 'blue', 'yellow', 'magenta'];
+    const bgColors = ['red', 'lime', 'blue', 'yellow', 'magenta'];
+
+    let borderIndex = 0;
+    let bgIndex = 0;
+
+    function cycleBorder() {
+      borderIndex = (borderIndex + 1) % borderColors.length;
+      bg.style.borderColor = borderColors[borderIndex];
+    }
+
+    function cycleBackground() {
+      bgIndex = (bgIndex + 1) % bgColors.length;
+      container.style.backgroundColor = bgColors[bgIndex];
+    }
+
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+      gif.style.display = 'block';
+      bg.style.display = 'block';
+      sound.play();
+
+      // Start color cycling
+      setInterval(cycleBorder, 400); // every 2 seconds
+      setInterval(cycleBackground, 300); // every 3 seconds (different interval)
+
+      // List of extra gif URLs
+    const extraGifs = [
+    'gifs/spongya.gif',
+    'gifs/minion.gif',
+    'gifs/amogus2.gif',
+    'gifs/daffy.gif'
+    ];
+
+    // Start spawning gifs
+    function spawnMovingGif() {
+    const gifUrl = extraGifs[Math.floor(Math.random() * extraGifs.length)];
+
+    const img = document.createElement('img');
+    img.src = gifUrl;
+    img.style.position = 'absolute';
+    img.style.zIndex = 100;
+    img.style.pointerEvents = 'none';
+
+    // Random entry direction: 'left', 'right', 'top'
+    const directions = ['left', 'right', 'top'];
+    const direction = directions[Math.floor(Math.random() * directions.length)];
+
+    // Random size (between 100px and 200px)
+    const size = 200 + Math.floor(Math.random() * 600);
+    img.style.width = size + 'px';
+
+    // Position and animation
+    if (direction === 'left') {
+        img.style.top = Math.random() * 80 + 10 + '%';
+        img.style.left = '-150px';
+        img.style.transition = 'left 3s linear';
+        container.appendChild(img);
+        setTimeout(() => { img.style.left = '110%'; }, 100);
+    } else if (direction === 'right') {
+        img.style.top = Math.random() * 80 + 10 + '%';
+        img.style.left = '110%';
+        img.style.transition = 'left 3s linear';
+        container.appendChild(img);
+        setTimeout(() => { img.style.left = '-150px'; }, 100);
+    } else if (direction === 'top') {
+        img.style.top = '-150px';
+        img.style.left = Math.random() * 80 + 10 + '%';
+        img.style.transition = 'top 3s linear';
+        container.appendChild(img);
+        setTimeout(() => { img.style.top = '110%'; }, 100);
+    }
+
+    // Remove the gif after it exits the screen
+    setTimeout(() => {
+        img.remove();
+    }, 6000);
+    }
+
+    // Launch new gif every 2 seconds
+    setInterval(spawnMovingGif, 600);
+    });
+  </script>
+</body>
+</html>
